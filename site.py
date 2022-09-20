@@ -1,28 +1,37 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
+# from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer # python2
+from http.server import BaseHTTPRequestHandler, HTTPServer # python3
+import cgi
 
-from io import BytesIO
+class HandleRequests(BaseHTTPRequestHandler):
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
 
-
-class handler(BaseHTTPRequestHandler):
-    
     def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        response = BytesIO()
-        response.write(b'This is GET request. ')
-
+        if self.path == "/":
+            self._set_headers()
+            f = open("index.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return
+        elif self.path == "/contact.html":
+            self._set_headers()
+            f = open("contact.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return
+            
+        
     def do_POST(self):
-        content_length = self.headers
-        print(content_length)
-#        body = self.rfile.read(content_length)
-        self.send_response(200)
-        self.end_headers()
-#        response = BytesIO()
-#        response.write(b'This is POST request. ')
-#        response.write(b'Received: ')
-#        response.write(body)
-#        self.wfile.write(response.getvalue())
+        self._set_headers()
+        form = cgi.FieldStorage(
+            fp = self.rfile,
+            headers=self.headers,
+            environ={'REQUEST_METHOD': 'POST'}
+        )
+        print(form.getvalue("name"))
 
-
-httpd = HTTPServer(('localhost', 8000), handler)
-httpd.serve_forever()
+host = ''
+port = 80
+HTTPServer((host, port), HandleRequests).serve_forever()

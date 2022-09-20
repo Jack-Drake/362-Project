@@ -10,14 +10,30 @@
 </head>
 
 <body>
-    <form action="/contact" method="POST">
+    <form id="contactForm">
         <div class="form-group">
-            <input class="form-input" type="name" value="name">
+            <input id="name" class="form-input" type="name">
         </div>
-        <button class="btn btn-primary" value="submit">Submit</button>
+        <button type="button" onclick="submitForm()" class="btn btn-primary">Submit</button>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
+    </script>
+    <script>
+        function submitForm() {
+            fetch("/contact", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'name': document.getElementById("name").value
+                })
+            }).then(res => {
+                //show alert
+                alert("Successfully sent POST Data");
+            });
+        }
     </script>
 </body>
 
