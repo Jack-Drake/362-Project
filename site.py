@@ -21,6 +21,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(f.read())
             f.close()
             return
+        elif self.path == "/logo.png":
+            self._set_headers()
+            f = open("logo.png", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return
             
         
     def do_POST(self):
