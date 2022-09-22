@@ -39,5 +39,5 @@ class HandleRequests(BaseHTTPRequestHandler):
         print(form.getvalue("name"))
 
 host = ''
-port = 80
+port = 1234
 HTTPServer((host, port), HandleRequests).serve_forever()
