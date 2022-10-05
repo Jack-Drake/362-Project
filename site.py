@@ -1,6 +1,13 @@
 # from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer # python2
 from http.server import BaseHTTPRequestHandler, HTTPServer # python3
 import cgi
+import os
+import smtplib
+
+EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
+EMAIL_PASSWORD =os.environ.get('EMAIL_PASS')
+
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -37,6 +44,19 @@ class HandleRequests(BaseHTTPRequestHandler):
             environ={'REQUEST_METHOD': 'POST'}
         )
         print(form.getvalue("name"))
+
+        with smtplib.SMTP('smtp.gmail.com',587) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            self.subject = form.getvalue("name")
+            self.body = form.getvalue("message")
+            self.email = form.getvalue("email")
+            
+            msg = f'Subject: {self.subject}\n\n{self.body}'
+            smtp.sendmail(EMAIL_ADDRESS, self.email, msg)
 
 host = ''
 port = 1234
