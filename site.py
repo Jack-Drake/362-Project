@@ -37,6 +37,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             
         
     def do_POST(self):
+        
         self._set_headers()
         form = cgi.FieldStorage(
             fp = self.rfile,
