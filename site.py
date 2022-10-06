@@ -4,6 +4,7 @@ import cgi
 import os
 import smtplib
 import json
+import io
 
 EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
 EMAIL_PASSWORD =os.environ.get('EMAIL_PASS')
@@ -63,7 +64,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif self.path == "/requestRandomRecipe":
             #send  random request
             print("here")
-            self.wfile.write(json.dumps([1,2,3]))
+            self.wfile.write(io.BytesIO("123"))
         
 
 host = ''
