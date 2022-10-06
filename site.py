@@ -64,7 +64,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif self.path == "/requestRandomRecipe":
             #send  random request
             print("here")
-            self.wfile.write(io.BytesIO("123"))
+            self.wfile.write(bytes("123"))
         
 
 host = ''
