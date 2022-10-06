@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer # python3
 import cgi
 import os
 import smtplib
+import json
 
 EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
 EMAIL_PASSWORD =os.environ.get('EMAIL_PASS')
@@ -37,27 +38,33 @@ class HandleRequests(BaseHTTPRequestHandler):
             
         
     def do_POST(self):
-        
-        self._set_headers()
-        form = cgi.FieldStorage(
-            fp = self.rfile,
-            headers=self.headers,
-            environ={'REQUEST_METHOD': 'POST'}
-        )
-        print(form.getvalue("name"))
+        if self.path == "/contact":
+            #handle form
+            self._set_headers()
+            form = cgi.FieldStorage(
+                fp = self.rfile,
+                headers=self.headers,
+                environ={'REQUEST_METHOD': 'POST'}
+            )
+            print(form.getvalue("name"))
 
-        with smtplib.SMTP('smtp.gmail.com',587) as smtp:
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.ehlo()
-            
-            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            self.subject = form.getvalue("name")
-            self.body = form.getvalue("message")
-            self.email = form.getvalue("email")
-            
-            msg = f'Subject: {self.subject}\n\n{self.body}'
-            smtp.sendmail(EMAIL_ADDRESS, self.email, msg)
+            with smtplib.SMTP('smtp.gmail.com',587) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
+                
+                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                self.subject = form.getvalue("name")
+                self.body = form.getvalue("message")
+                self.email = form.getvalue("email")
+                
+                msg = f'Subject: {self.subject}\n\n{self.body}'
+                smtp.sendmail(EMAIL_ADDRESS, self.email, msg)
+        elif self.path == "/requestRandomRecipe":
+            #send  random request
+            print("here")
+            self.wfile.write(json.dumps([1,2,3]))
+        
 
 host = ''
 port = 1234
