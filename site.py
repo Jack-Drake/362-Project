@@ -69,7 +69,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             self._set_headers()
 
             #send  random request
-            randomIndex = random.randint(0, len(recipe_dict))
+            randomIndex = random.randint(0, len(recipe_dict)-1)
             print(f"Random index: {randomIndex}")
             randomRecipe = recipe_dict[randomIndex]
 
