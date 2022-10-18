@@ -50,16 +50,29 @@
         window.onload = function(){
             fetch("/requestRandomRecipe", {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: null
+                // headers: {
+                //     'Content-Type': 'application/x-www-form-urlencoded'
+                // },
+                // body: null
             }).then(res => {
                 //show alert
-                alert("Successfully sent POST Data");
+                return res.json()
+            }).then(json => {
+                console.log(json);
+                const cardElement = `<div class="card" style="width: 18rem;">
+            <img src="https://via.placeholder.com/150x150" class="card-img-top" alt="Recipe of the day">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>`
+                console.log(res);
+           
 
                 //send the data
-                console.log(res);
+              
             });
         }
     </script>

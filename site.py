@@ -5,11 +5,15 @@ import os
 import smtplib
 import json
 import io
+import random
 
 EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
 EMAIL_PASSWORD =os.environ.get('EMAIL_PASS')
 
-
+# Reading JSON from file
+recipe_dict = {}
+with open('recipes.json', 'r') as f2:
+    recipe_dict = json.load(f2)
 
 class HandleRequests(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -63,9 +67,14 @@ class HandleRequests(BaseHTTPRequestHandler):
                 smtp.sendmail(EMAIL_ADDRESS, self.email, msg)
         elif self.path == "/requestRandomRecipe":
             #send  random request
-            print("here")
-            self.wfile.write(bytes("123"))
-        
+            alert("Successfully sent POST Data");
+            randomIndex = random.randint(0, len(recipe_dict))
+            print(f"Random index: {randomIndex}")
+            randomRecipe = recipe_dict[randomIndex]
+            #print(recipe_dict)
+            #print("here")
+            #self.wfile.write(bytes(randomRecipe))
+            self.wfile.write(bytes(json.dumps(randomRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
 
 host = ''
 port = 1234
