@@ -66,14 +66,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                 msg = f'Subject: {self.subject}\n\n{self.body}'
                 smtp.sendmail(EMAIL_ADDRESS, self.email, msg)
         elif self.path == "/requestRandomRecipe":
+            self._set_headers()
+
             #send  random request
-            alert("Successfully sent POST Data");
             randomIndex = random.randint(0, len(recipe_dict))
             print(f"Random index: {randomIndex}")
             randomRecipe = recipe_dict[randomIndex]
-            #print(recipe_dict)
-            #print("here")
-            #self.wfile.write(bytes(randomRecipe))
+
             self.wfile.write(bytes(json.dumps(randomRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
 
 host = ''
