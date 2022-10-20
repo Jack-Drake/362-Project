@@ -75,6 +75,24 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             self.wfile.write(bytes(json.dumps(randomRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
 
+        # double check
+        elif self.path == "/allRecipes":
+            self._set_headers()
+            f = open("allRecipes.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            # okay to pass dict?
+            self.wfile.write(bytes(json.dumps(recipe_dict, sort_keys=True, indent = 4), encoding = 'utf8'))
+            return
+
+        # incomplete
+        elif self.path == "/individualRecipe":
+            self._set_headers()
+            f = open("individualRecipe.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return
+
 host = ''
 port = 1234
 HTTPServer((host, port), HandleRequests).serve_forever()
