@@ -15,6 +15,8 @@ recipe_dict = {}
 with open('recipes.json', 'r') as f2:
     recipe_dict = json.load(f2)
 
+# print(len(recipe_dict))
+
 class HandleRequests(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
@@ -89,9 +91,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         # double check
         elif self.path == "/allRecipes":
             self._set_headers()
-            f = open("allRecipes.html", 'rb')
-            self.wfile.write(f.read())
-            f.close()
             # okay to pass dict?
             self.wfile.write(bytes(json.dumps(recipe_dict, sort_keys=True, indent = 4), encoding = 'utf8'))
             return
@@ -99,9 +98,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         # incomplete
         elif self.path == "/individualRecipe":
             self._set_headers()
-            f = open("individualRecipe.html", 'rb')
-            self.wfile.write(f.read())
-            f.close()
             return
 
 host = ''
