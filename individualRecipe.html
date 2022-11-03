@@ -41,13 +41,14 @@
     </script>
     <script>
         window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
             fetch("/requestRandomRecipe", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: new URLSearchParams({
-                        'recipeID': Math.floor(Math.random() * 10)
+                        'recipeID': urlParams.get("recipeID")
                     })
                 })
                 .then((response) => response.json())
