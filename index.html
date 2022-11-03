@@ -56,22 +56,23 @@
         }
 
         function handleRandomRecipeResponse(data){
-            console.log(data);
+            var recipe_id = data[0];
+            var recipe = data[1];
             document.getElementById("randomRecipeContainer").innerHTML = `
             <div class="row m-3" style="min-height: 400px;">
                 <div class="col" style="
-                background: url(`+ data.imageURL +`);
+                background: url(`+ recipe.imageURL +`);
                 background-repeat: no-repeat;
                 background-size: cover;"></div>
                 <div class="col" style="position:relative;">
                     <div class="text-start">
-                        <h2>`+ data.name +`</h2>
+                        <h2>`+ recipe.name +`</h2>
                         <hr>
-                        <h5>Total Ingredients: `+ data.ingredients.length +`</h5>
-                        <h5>Total Steps: `+ data.steps.length +`</h5>
+                        <h5>Total Ingredients: `+ recipe.ingredients.length +`</h5>
+                        <h5>Total Steps: `+ recipe.steps.length +`</h5>
                     </div>
                     <div style="position: absolute;bottom:0;right:0;">
-                        <a class="btn btn-success" href="individualRecipe.html?recipeID=`+ data.recipe_id +`">Learn More</a>
+                        <a class="btn btn-success" href="individualRecipe.html?recipeID=`+ recipe_id +`">Learn More</a>
                     </div>
                 </div>
             </div>
