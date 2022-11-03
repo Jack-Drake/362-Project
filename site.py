@@ -40,7 +40,18 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(f.read())
             f.close()
             return
-            
+        elif self.path == "/allRecipes.html":
+            self._set_headers()
+            f = open("allRecipes.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return
+        elif self.path == "/individualRecipe.html":
+            self._set_headers()
+            f = open("individualRecipe.html", 'rb')
+            self.wfile.write(f.read())
+            f.close()
+            return            
         
     def do_POST(self):
         if self.path == "/contact":
