@@ -35,8 +35,12 @@
     </nav>
     <div class="container text-center mt-5">
         <h1>Explore Our Recipes</h1>
-        
-        <div id="randomRecipeContainer" class="container"></div>
+
+        <div class="container">
+            <div id="allRecipesContainer" class="row">
+
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -50,13 +54,25 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: null
-            })
-            .then((response) => response.json())
-            .then((data) => handleRandomRecipeResponse(data));
+                })
+                .then((response) => response.json())
+                .then((data) => handleRandomRecipeResponse(data));
         }
 
-        function handleRandomRecipeResponse(data){
+        function handleRandomRecipeResponse(data) {
             console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("allRecipesContainer").innerHTML += `
+                <div class="card col-4 m-1" style="width: 18rem;">
+                    <img src="`+ data[i].imageURL +`" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">`+ data[i].name +`</h5>
+                        <p class="card-text">Total Ingredients: `+ data[i].ingredients.length +`</p>
+                        <p class="card-text">Total Steps: `+ data[i].steps.length +`</p>
+                        <a href="individualRecipe.html?recipeID=`+ i +`" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>`;
+            }
         }
     </script>
 </body>
