@@ -83,8 +83,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             #send  random request
             randomIndex = random.randint(0, len(recipe_dict)-1)
-            print(f"Random index: {randomIndex}")
-            randomRecipe = recipe_dict[randomIndex]
+            # print(f"Random index: {randomIndex}")
+            # recipe_dict['recipe_id'] = randomIndex
+            # print(recipe_dict['recipe_id'])
+            randomRecipe = [randomIndex, recipe_dict[randomIndex]]
 
             self.wfile.write(bytes(json.dumps(randomRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
 
