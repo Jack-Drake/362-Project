@@ -51,8 +51,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             f.close()
             return
         elif "/individualRecipe.html" in self.path:
-            #individualIndex = self.path[-1]
-            print(f"Individual Index = {individualIndex}")
+            individualIndex = self.path[-1]
+            #print(f"Individual Index = {individualIndex}")
             self._set_headers()
             f = open("individualRecipe.html", 'rb')
             self.wfile.write(f.read())
