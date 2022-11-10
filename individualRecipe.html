@@ -30,33 +30,56 @@
             </div>
         </div>
     </nav>
-    <div class="container text-center mt-5">
-        <h1>Recipe Name</h1>
-
-        <div id="specificRecipe" class="container"></div>
-    </div>
+    <div id="specificRecipe" class="container-fluid mt-5 p-4"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
     </script>
     <script>
         window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            fetch("/requestRandomRecipe", {
+            fetch("/individualRecipe", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: new URLSearchParams({
-                        'recipeID': urlParams.get("recipeID")
-                    })
+                    body: null
                 })
                 .then((response) => response.json())
-                .then((data) => handleRandomRecipeResponse(data));
+                .then((data) => handleRecipe(data));
         }
 
-        function handleRandomRecipeResponse(data) {
+        function handleRecipe(data) {
             console.log(data);
+
+            document.getElementById("specificRecipe").innerHTML = `
+                <div class="text-left">
+                    <h1 class="">` + data.name + `</h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-9">
+                        <div style="width:100%;height:500px;background: url(` + data.imageURL + `);background-repeat: no-repeat;background-position: center;background-size: cover;"></div>                    
+                        <div class="mt-4">
+                            <h3>Ingredients</h3>
+                            <ul class="list-group list-group-flush ms-5" id="ingredientsList"></ul>
+
+                            <h3>Steps</h3>
+                            <ul class="list-group list-group-flush ms-5" id="stepsList"></ul>
+                        </div>
+                    </div>
+                    <div class="col-3">
+
+                    </div>
+                </div>`;
+
+            for (var i = 0; i < data.ingredients.length; i++) {
+                document.getElementById("ingredientsList").innerHTML += `<li class="list-group-item">` + data
+                    .ingredients[i].name + ` ` + data.ingredients[i].quantity + `</li>`;
+            }
+
+            for (var i = 0; i < data.steps.length; i++) {
+                document.getElementById("stepsList").innerHTML += `<li class="list-group-item"><div class="row"><div class="col-1"><h4>`+ (i + 1) +`</h4></div><div class="col"><h6 class="m-0 p-0">` + data.steps[i] + `</h6></div></div></li>`;
+            }
         }
     </script>
 </body>
