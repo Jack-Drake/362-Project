@@ -15,6 +15,8 @@ recipe_dict = {}
 with open('recipes.json', 'r') as f2:
     recipe_dict = json.load(f2)
 
+individualIndex = -1
+
 # print(len(recipe_dict))
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -48,7 +50,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(f.read())
             f.close()
             return
-        elif self.path == "/individualRecipe.html":
+        elif "/individualRecipe.html" in self.path:
+            #individualIndex = self.path[-1]
+            print(f"Individual Index = {individualIndex}")
             self._set_headers()
             f = open("individualRecipe.html", 'rb')
             self.wfile.write(f.read())
@@ -100,6 +104,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         # incomplete
         elif self.path == "/individualRecipe":
             self._set_headers()
+            individualRecipe = recipe_dict[individualIndex]
+            self.wfile.write(bytes(json.dumps(individualRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
+
             return
 
 host = ''
