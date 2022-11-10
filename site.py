@@ -51,7 +51,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             f.close()
             return
         elif "/individualRecipe.html" in self.path:
-            individualIndex = self.path[-1]
+            individualIndex = int(self.path[-1])
             #print(f"Individual Index = {individualIndex}")
             self._set_headers()
             f = open("individualRecipe.html", 'rb')
@@ -102,9 +102,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             return
 
         # incomplete
-        elif self.path == "/individualRecipe":
+        elif "/individualRecipe" in self.path:
             self._set_headers()
             individualRecipe = recipe_dict[individualIndex]
+            print(individualRecipe)
             self.wfile.write(bytes(json.dumps(individualRecipe, sort_keys=True, indent = 4), encoding = 'utf8'))
 
             return
