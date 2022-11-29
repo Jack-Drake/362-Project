@@ -24,6 +24,9 @@
                         <a class="nav-link" aria-current="page" href="./">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/allRecipes.html">All Recipes</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/contact.html">Contact</a>
                     </li>
                 </ul>
@@ -46,10 +49,21 @@
                 })
                 .then((response) => response.json())
                 .then((data) => handleRecipe(data));
+
+            fetch("/allRecipes", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: null
+                })
+                .then((response) => response.json())
+                .then((data) => handlethumbnailRecipes(data));
         }
 
         function handleRecipe(data) {
-            console.log(data);
+            //make global variable that will save the imageurl to prevent repeat recipes on the thumbnail column
+            globalImageURL = data.imageURL;
 
             document.getElementById("specificRecipe").innerHTML = `
                 <div class="text-left">
@@ -67,8 +81,7 @@
                             <ul class="list-group list-group-flush ms-5" id="stepsList"></ul>
                         </div>
                     </div>
-                    <div class="col-3">
-
+                    <div id="thumbnail_previews" class="col-3">
                     </div>
                 </div>`;
 
@@ -78,7 +91,27 @@
             }
 
             for (var i = 0; i < data.steps.length; i++) {
-                document.getElementById("stepsList").innerHTML += `<li class="list-group-item"><div class="row"><div class="col-1"><h4>`+ (i + 1) +`</h4></div><div class="col"><h6 class="m-0 p-0">` + data.steps[i] + `</h6></div></div></li>`;
+                document.getElementById("stepsList").innerHTML +=
+                    `<li class="list-group-item"><div class="row"><div class="col-1"><h4>` + (i + 1) +
+                    `</h4></div><div class="col"><h6 class="m-0 p-0">` + data.steps[i] + `</h6></div></div></li>`;
+            }
+        }
+
+        function handlethumbnailRecipes(data){
+            for(var i = 0; i < data.length; i++){
+                if (data[i].imageURL == globalImageURL){
+                    continue;
+                }
+
+                document.getElementById("thumbnail_previews").innerHTML += `
+                            <div class="row mb-3" style="cursor:pointer;" onclick="window.location.replace('individualRecipe.html?recipeID=`+ i +`');">
+                                <div class="col" style="background-image: url(`+ data[i].imageURL +`);height: 100px;background-repeat: no-repeat;background-position: center;background-size: cover;"></div>
+                                <div class="col">
+                                    <h5>`+ data[i].name +`</h5>
+                                    <small>Total Steps: `+ data[i].steps.length +`</small>
+                                </div>
+                            </div>
+                `;
             }
         }
     </script>
